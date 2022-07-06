@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package usermanagement;
+option go_package="faltar-module-proto/go/services/usermanagement;usermanagement";
+
+import "proto/services/usermanagement/login.proto";
+import "google/protobuf/empty.proto";
+
+service UserManagementService {
+  rpc Login(LoginRequest) returns (LoginResponse);
+  rpc Logout(LogoutRequest) returns (google.protobuf.Empty);
+}

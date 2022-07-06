@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package usermanagement;
+option go_package="faltar-module-proto/go/services/usermanagement;usermanagement";
+
+
+message LoginRequest {
+  string userid = 1;
+  string password = 2;
+  string ip = 3;
+}
+
+message LoginResponse {
+  string uuid = 1;
+  string userid = 2;
+  string levelID = 3;
+  string name = 4;
+}
+
+message LogoutRequest {
+  string uuid = 1;
+}
