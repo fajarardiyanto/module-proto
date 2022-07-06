@@ -3,7 +3,7 @@ Sharing Proto file and go struct for Nano Project
 
 ##### Installation
 ```sh
-go get github.com/fajarardiyanto/faltar/faltar-module-proto
+go get github.com/fajarardiyanto/module-proto
 ```
 
 ##### Generate go struct from proto
