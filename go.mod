@@ -1,7 +1,7 @@
-module faltar-module-proto
+module github.com/fajarardiyanto/module-proto
 
 go 1.14
 
-replace faltar-module-proto => ./
+replace github.com/fajarardiyanto/module-proto => ./
 
 require github.com/favadi/protoc-go-inject-tag v1.3.0 // indirect
