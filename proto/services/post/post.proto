@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package post;
+option go_package="faltar-module-proto/go/services/post;post";
+
+import "proto/services/post/getpostlist.proto";
+import "google/protobuf/empty.proto";
+
+service PostService {
+  rpc GetPost(google.protobuf.Empty) returns (GetPostListResponse);
+}
