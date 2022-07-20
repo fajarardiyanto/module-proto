@@ -14,9 +14,8 @@ message Post {
   repeated string Tags = 4;
   string Draft = 5;
   string Summary = 6;
-  string Overview = 7;
-  string Layout = 8;
-  string Bibliography = 9;
-  string CanonicalURL = 10;
-  string Slug = 11;
+  string Layout = 7;
+  string Bibliography = 8;
+  string CanonicalURL = 9;
+  string Slug = 10;
 }

@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PostServiceClient interface {
 	GetPost(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetPostListResponse, error)
+	SavePost(ctx context.Context, in *SavePostRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type postServiceClient struct {
@@ -39,11 +40,21 @@ func (c *postServiceClient) GetPost(ctx context.Context, in *emptypb.Empty, opts
 	return out, nil
 }
 
+func (c *postServiceClient) SavePost(ctx context.Context, in *SavePostRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/post.PostService/SavePost", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PostServiceServer is the server API for PostService service.
 // All implementations must embed UnimplementedPostServiceServer
 // for forward compatibility
 type PostServiceServer interface {
 	GetPost(context.Context, *emptypb.Empty) (*GetPostListResponse, error)
+	SavePost(context.Context, *SavePostRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedPostServiceServer()
 }
 
@@ -53,6 +64,9 @@ type UnimplementedPostServiceServer struct {
 
 func (UnimplementedPostServiceServer) GetPost(context.Context, *emptypb.Empty) (*GetPostListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPost not implemented")
+}
+func (UnimplementedPostServiceServer) SavePost(context.Context, *SavePostRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SavePost not implemented")
 }
 func (UnimplementedPostServiceServer) mustEmbedUnimplementedPostServiceServer() {}
 
@@ -85,6 +99,24 @@ func _PostService_GetPost_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PostService_SavePost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SavePostRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostServiceServer).SavePost(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/post.PostService/SavePost",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostServiceServer).SavePost(ctx, req.(*SavePostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PostService_ServiceDesc is the grpc.ServiceDesc for PostService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -95,6 +127,10 @@ var PostService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetPost",
 			Handler:    _PostService_GetPost_Handler,
+		},
+		{
+			MethodName: "SavePost",
+			Handler:    _PostService_SavePost_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
