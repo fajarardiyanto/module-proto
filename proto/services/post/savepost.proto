@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package post;
+option go_package="faltar-module-proto/go/services/post;post";
+
+message SavePostRequest {
+  repeated SavePost Post = 1;
+}
+
+
+message SavePost {
+  string Title = 1;
+  string Date = 2;
+  string LastMod = 3;
+  repeated string Tags = 4;
+  string Draft = 5;
+  string Summary = 6;
+  string Overview = 7;
+  string Layout = 8;
+  string Bibliography = 9;
+  string CanonicalURL = 10;
+  string Slug = 11;
+}
