@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package post;
+option go_package="faltar-module-proto/go/services/game;game";
+
+import "google/protobuf/empty.proto";
+
+message GameResponse {
+  repeated Game Game = 1;
+}
+
+message Game {
+  string ID = 1;
+  string Code = 2;
+  string GroundID = 3;
+  string EventID = 4;
+  string Name = 5;
+  string StartDate = 6;
+  string EndDate = 7;
+  ModifiedBy ModifiedBy = 8;
+  Metadata Metadata = 9;
+  string CreatedAt = 10;
+  string UpdatedAt = 11;
+}
+
+message GameRequest {
+  string GroundID = 1;
+  string EventID = 2;
+  string Name = 3;
+  string StartDate = 4;
+  string EndDate = 5;
+  ModifiedBy ModifiedBy = 6;
+  Metadata Metadata = 7;
+}
+
+message Metadata {
+  string ImageURL = 1;
+}
+
+message ModifiedBy {
+  string ID = 1;
+  string Role = 2;
+}
+
+service GameService {
+  rpc GetGame(google.protobuf.Empty) returns (GameResponse);
+  rpc CreateGame(GameRequest) returns (google.protobuf.Empty);
+}

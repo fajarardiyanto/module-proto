@@ -19,7 +19,8 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type GameServiceClient interface {
-	GetGround(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetListGround, error)
+	GetGame(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GameResponse, error)
+	CreateGame(ctx context.Context, in *GameRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type gameServiceClient struct {
@@ -30,9 +31,18 @@ func NewGameServiceClient(cc grpc.ClientConnInterface) GameServiceClient {
 	return &gameServiceClient{cc}
 }
 
-func (c *gameServiceClient) GetGround(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetListGround, error) {
-	out := new(GetListGround)
-	err := c.cc.Invoke(ctx, "/post.GameService/GetGround", in, out, opts...)
+func (c *gameServiceClient) GetGame(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GameResponse, error) {
+	out := new(GameResponse)
+	err := c.cc.Invoke(ctx, "/post.GameService/GetGame", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *gameServiceClient) CreateGame(ctx context.Context, in *GameRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/post.GameService/CreateGame", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +53,8 @@ func (c *gameServiceClient) GetGround(ctx context.Context, in *emptypb.Empty, op
 // All implementations must embed UnimplementedGameServiceServer
 // for forward compatibility
 type GameServiceServer interface {
-	GetGround(context.Context, *emptypb.Empty) (*GetListGround, error)
+	GetGame(context.Context, *emptypb.Empty) (*GameResponse, error)
+	CreateGame(context.Context, *GameRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedGameServiceServer()
 }
 
@@ -51,8 +62,11 @@ type GameServiceServer interface {
 type UnimplementedGameServiceServer struct {
 }
 
-func (UnimplementedGameServiceServer) GetGround(context.Context, *emptypb.Empty) (*GetListGround, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetGround not implemented")
+func (UnimplementedGameServiceServer) GetGame(context.Context, *emptypb.Empty) (*GameResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetGame not implemented")
+}
+func (UnimplementedGameServiceServer) CreateGame(context.Context, *GameRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateGame not implemented")
 }
 func (UnimplementedGameServiceServer) mustEmbedUnimplementedGameServiceServer() {}
 
@@ -67,20 +81,38 @@ func RegisterGameServiceServer(s grpc.ServiceRegistrar, srv GameServiceServer) {
 	s.RegisterService(&GameService_ServiceDesc, srv)
 }
 
-func _GameService_GetGround_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _GameService_GetGame_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GameServiceServer).GetGround(ctx, in)
+		return srv.(GameServiceServer).GetGame(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/post.GameService/GetGround",
+		FullMethod: "/post.GameService/GetGame",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GameServiceServer).GetGround(ctx, req.(*emptypb.Empty))
+		return srv.(GameServiceServer).GetGame(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GameService_CreateGame_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GameRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GameServiceServer).CreateGame(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/post.GameService/CreateGame",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GameServiceServer).CreateGame(ctx, req.(*GameRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -93,10 +125,14 @@ var GameService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*GameServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetGround",
-			Handler:    _GameService_GetGround_Handler,
+			MethodName: "GetGame",
+			Handler:    _GameService_GetGame_Handler,
+		},
+		{
+			MethodName: "CreateGame",
+			Handler:    _GameService_CreateGame_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "proto/services/game/ground.proto",
+	Metadata: "proto/services/game/game.proto",
 }
