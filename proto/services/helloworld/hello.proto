@@ -1,0 +1,16 @@
+syntax = "proto3";
+option go_package = "faltar-module-proto/go/services/helloworld;helloworld";
+package helloworld;
+
+import "google/protobuf/empty.proto";
+
+message HelloWorldResponse {
+  string Message = 1;
+  string ServiceID = 2;
+  map<string, string> RequestMetaData = 5;
+}
+
+service Services {
+  rpc Do(google.protobuf.Empty) returns(HelloWorldResponse);
+}
+
