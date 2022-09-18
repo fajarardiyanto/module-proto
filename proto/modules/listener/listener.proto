@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+option go_package = "faltar-module-proto/go/modules/listener;listener";
+
+package listener;
+
+service Listener {
+  rpc Services(NoParameter) returns (ServicesResponse) {}
+}
+
+message NoParameter {}
+
+message ServicesResponse {
+  repeated ServicesItems Items = 1;
+}
+
+message ParameterFunction {
+  string Name = 1;
+  string Send = 2;
+  string Recv = 3;
+}
+
+message ServicesItems {
+  string Service = 1;
+  string Method = 2;
+  string FullMethod = 3;
+  repeated ParameterFunction Input = 4;
+  repeated ParameterFunction Output = 5;
+  bool ServerStream = 6;
+  bool ClientStream = 7;
+  string ProtoReference = 8;
+}
+
+message Discovery {
+  bool Enable = 1; // @gotags: yaml:"enable"
+  string Driver = 2; // @gotags: yaml:"driver"
+  string Exchange = 3;  // @gotags: yaml:"exchange"
+}
+
+
+
+message RouterListener {
+  string Name = 1;        // @gotags: yaml:"name" validate:"required" gorm:"column:name;primaryKey" mapstructure:"name"
+  string Pem = 2;         // @gotags: yaml:"pem"  gorm:"column:pem" mapstructure:"pem"
+  int32 Port = 3;          // @gotags: yaml:"port" validate:"required,min=1,max=65535" gorm:"column:port" mapstructure:"port"
+  string Listen = 4;      // @gotags: yaml:"listen" validate:"required,hostname_rfc1123" gorm:"column:listen" mapstructure:"listen"
+  bool Secure = 5;        // @gotags: yaml:"secure" gorm:"column:secure" mapstructure:"secure"
+}

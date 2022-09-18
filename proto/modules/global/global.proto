@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option go_package = "faltar-module-proto/go/modules/global;global";
+
+package global;
+
+message NoParameter {}
+
+message Request {
+  string Message = 1;  // @gotags: validate:"required"
+}
+
+message MetaData {
+  string Key = 1;
+  string Value = 2;
+}
+
+message Response {
+  string Message = 1;
+}
+
+message AppInfo {
+  string Name = 1;
+  string Version = 2;
+  string Commit = 3;
+}
