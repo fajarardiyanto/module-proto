@@ -38,6 +38,17 @@ message Discovery {
 }
 
 
+message ServicesInfo {
+  string Version = 1; // @gotags: json:"version,omitempty"
+  string GitCommit = 2; // @gotags: json:"gitCommit,omitempty"
+  string GoVersion = 3; // @gotags: json:"goVersion,omitempty"
+  string Compiler = 4; // @gotags: json:"compiler,omitempty"
+  string BuildTime = 5; // @gotags: json:"buildTime,omitempty"
+}
+
+message Services {
+  ServicesInfo ServicesInfo = 6; // @gotags: json:"servicesInfo,omitempty"
+}
 
 message RouterListener {
   string Name = 1;        // @gotags: yaml:"name" validate:"required" gorm:"column:name;primaryKey" mapstructure:"name"
