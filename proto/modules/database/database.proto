@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option go_package = "faltar-module-proto/go/modules/database;database";
+import "google/protobuf/any.proto";
+
+package database;
+
+message SendData {
+  string ID = 1;
+  google.protobuf.Any Data = 2;
+}
